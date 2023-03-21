@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sandhu-sahil/gin-and-mongodb/models"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,7 +30,7 @@ func (u *UserServiceImpl) CreateUser(user *models.User) error {
 
 func (u *UserServiceImpl) GetUser(name *string) (*models.User, error) {
 	var user *models.User
-	query := bson.D{bson.E{Key: "name", Value: name}}
+	query := bson.D{bson.E{Key: "user_name", Value: name}}
 	err := u.usercollection.FindOne(u.ctx, query).Decode(&user)
 	return user, err
 }
@@ -62,8 +63,10 @@ func (u *UserServiceImpl) GetAll() ([]*models.User, error) {
 }
 
 func (u *UserServiceImpl) UpdateUser(user *models.User) error {
-	filter := bson.D{primitive.E{Key: "name", Value: user.Name}}
-	update := bson.D{primitive.E{Key: "$set", Value: bson.D{primitive.E{Key: "name", Value: user.Name}, primitive.E{Key: "age", Value: user.Age}, primitive.E{Key: "address", Value: user.Address}}}}
+	filter := bson.D{bson.E{Key: "user_name", Value: user.Name}}
+	fmt.Print(filter)
+	update := bson.D{bson.E{Key: "$set", Value: bson.D{bson.E{Key: "user_name", Value: user.Name}, bson.E{Key: "user_age", Value: user.Age}, bson.E{Key: "user_address", Value: user.Address}}}}
+	fmt.Print(update)
 	result, _ := u.usercollection.UpdateOne(u.ctx, filter, update)
 	if result.MatchedCount != 1 {
 		return errors.New("no matched document found for update")
@@ -72,7 +75,7 @@ func (u *UserServiceImpl) UpdateUser(user *models.User) error {
 }
 
 func (u *UserServiceImpl) DeleteUser(name *string) error {
-	filter := bson.D{primitive.E{Key: "name", Value: name}}
+	filter := bson.D{primitive.E{Key: "user_name", Value: name}}
 	result, _ := u.usercollection.DeleteOne(u.ctx, filter)
 	if result.DeletedCount != 1 {
 		return errors.New("no matched document found for delete")
