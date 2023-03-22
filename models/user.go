@@ -7,7 +7,7 @@ type Address struct {
 }
 
 type User struct {
-	Name    string  `json:"name,omitempty" bson:"user_name,omitempty"`
-	Age     int     `json:"age,string,omitempty" bson:"user_age,omitempty"`
-	Address Address `json:"address" bson:"user_address"`
+	Name    string    `json:"name,omitempty" bson:"user_name,omitempty"`
+	Age     int       `json:"age,string,omitempty" bson:"user_age,omitempty"`
+	Address []Address `json:"address" bson:"user_address"`
 }
