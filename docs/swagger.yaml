@@ -1,0 +1,57 @@
+basePath: /v1/user
+definitions:
+  models.Address:
+    properties:
+      city:
+        type: string
+      pincode:
+        type: string
+      state:
+        type: string
+    type: object
+  models.User:
+    properties:
+      address:
+        items:
+          $ref: '#/definitions/models.Address'
+        type: array
+      age:
+        example: "0"
+        type: string
+      name:
+        type: string
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+host: localhost:8888
+info:
+  contact: {}
+  description: A Tag service API in Go using Gin framework
+  title: Tag Service API
+  version: "1.0"
+paths:
+  /user/create:
+    post:
+      description: Save user data in Db.
+      parameters:
+      - description: Create User
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create User
+      tags:
+      - tags
+swagger: "2.0"

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sandhu-sahil/gin-and-mongodb/controllers"
+	_ "sandhu-sahil/gin-and-mongodb/docs"
 	"sandhu-sahil/gin-and-mongodb/services"
 
 	"github.com/gin-gonic/gin"
@@ -44,6 +45,12 @@ func init() {
 	server = gin.Default()
 }
 
+// @title 	Tag Service API
+// @version	1.0
+// @description A Tag service API in Go using Gin framework
+
+// @host 	localhost:8888
+// @BasePath /v1/user
 func main() {
 	defer mongoclient.Disconnect(ctx)
 

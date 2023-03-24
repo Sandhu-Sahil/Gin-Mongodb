@@ -6,6 +6,8 @@ import (
 	"sandhu-sahil/gin-and-mongodb/services"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type UserController struct {
@@ -18,6 +20,14 @@ func New(userservice services.UserService) UserController {
 	}
 }
 
+// CreateTags		godoc
+// @Summary			Create User
+// @Description		Save user data in Db.
+// @Param			tags body models.User true "Create User"
+// @Produce			application/json
+// @Tags			tags
+// @Success			200 {object} response.Response{}
+// @Router			/user/create [post]
 func (uc *UserController) CreateUser(ctx *gin.Context) {
 	var user models.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -76,10 +86,14 @@ func (uc *UserController) DeleteUser(ctx *gin.Context) {
 }
 
 func (uc *UserController) RegisterUserRoutes(rg *gin.RouterGroup) {
+	// add swagger
+	rg.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	userroute := rg.Group("/user")
 	userroute.POST("/create", uc.CreateUser)
 	userroute.GET("/get/:name", uc.GetUser)
 	userroute.GET("/getall", uc.GetAll)
 	userroute.PATCH("/update", uc.UpdateUser)
 	userroute.DELETE("/delete/:name", uc.DeleteUser)
+
 }
